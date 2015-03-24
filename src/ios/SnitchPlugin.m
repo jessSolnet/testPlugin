@@ -18,10 +18,10 @@
 
 
 - (void)forcecrash:(CDVInvokedUrlCommand *)command {
-  handleCrashReport();
+  [self handleCrashReport];
 }
 
-/
+//
 // Called to handle a pending crash report.
 //
 - (void) handleCrashReport {
@@ -42,7 +42,7 @@
     if (report == nil) {
         NSLog(@"Could not parse crash report");
         goto finish;
-    }git
+    }
 
     NSLog(@"Crashed on %@", report.systemInfo.timestamp);
     NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
