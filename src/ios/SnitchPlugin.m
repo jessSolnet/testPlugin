@@ -33,7 +33,9 @@
      crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
      if (crashData == nil) {
          NSLog(@"Could not load crash report: %@", error);
-        goto finish;
+         // Purge the report
+         [crashReporter purgePendingCrashReport];
+         return;
      }
 
     // We could send the report from here, but we'll just print out
@@ -41,17 +43,14 @@
     PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
     if (report == nil) {
         NSLog(@"Could not parse crash report");
-        goto finish;
+        // Purge the report
+        [crashReporter purgePendingCrashReport];
+        return;
     }
 
     NSLog(@"Crashed on %@", report.systemInfo.timestamp);
     NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
     report.signalInfo.code, report.signalInfo.address);
-
-    // Purge the report
-    finish:
-    [crashReporter purgePendingCrashReport];
-    return;
 }
 
 // from UIApplicationDelegate protocol
