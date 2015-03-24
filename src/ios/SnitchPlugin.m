@@ -38,11 +38,11 @@
 
     // We could send the report from here, but we'll just print out
     // some debugging info instead
-    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
+    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error]];
     if (report == nil) {
         NSLog(@"Could not parse crash report");
         goto finish;
-    }
+    }git
 
     NSLog(@"Crashed on %@", report.systemInfo.timestamp);
     NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
@@ -64,35 +64,5 @@
     // Enable the Crash Reporter
     if (![crashReporter enableCrashReporterAndReturnError: &error])
        NSLog(@"Warning: Could not enable crash reporter: %@", error);
-}
-
-#pragma mark Logging methods
-
-// get the log content with a maximum byte size
-- (NSString *) getLogFilesContentWithMaxSize:(NSInteger)maxSize {
-    NSMutableString *description = [NSMutableString string];
-
-    NSArray *sortedLogFileInfos = [[_fileLogger logFileManager] sortedLogFileInfos];
-    NSInteger count = [sortedLogFileInfos count];
-
-    // we start from the last one
-    for (NSInteger index = count - 1; index >= 0; index--) {
-        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
-
-        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
-        if ([logData length] > 0) {
-            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
-                                                        length:[logData length]
-                                                      encoding: NSUTF8StringEncoding];
-
-            [description appendString:result];
-        }
-    }
-
-    if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange([description length]-maxSize-1, maxSize)];
-    }
-
-    return description;
 }
 @end
