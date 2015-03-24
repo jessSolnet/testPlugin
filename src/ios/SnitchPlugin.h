@@ -7,5 +7,4 @@
 
 @interface SnitchPlugin : CDVPlugin
 - (void)forcecrash:(CDVInvokedUrlCommand*)command;
-
 @end
