@@ -2,6 +2,9 @@
 //  SnitchPlugin.m
 //
 
+#import <CrashReporter.h>
+#import 
+
 #import "SnitchPlugin.h"
 
 @interface SnitchPlugin ()
