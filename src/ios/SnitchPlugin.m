@@ -38,7 +38,7 @@
 
     // We could send the report from here, but we'll just print out
     // some debugging info instead
-    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error]];
+    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
     if (report == nil) {
         NSLog(@"Could not parse crash report");
         goto finish;
