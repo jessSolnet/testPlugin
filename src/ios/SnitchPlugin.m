@@ -20,22 +20,22 @@ extern int ddLogLevel;
 #pragma mark Initialization
 
 - (void)pluginInitialize {
-    NSString * hockeyAppKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"HockeyApp App ID"];
-    if( hockeyAppKey!=nil && [hockeyAppKey isEqualToString:@""]==NO && [hockeyAppKey rangeOfString:@"HOCKEY_APP_KEY"].location == NSNotFound ){
+   // NSString * hockeyAppKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"HockeyApp App ID"];
+   // if( hockeyAppKey!=nil && [hockeyAppKey isEqualToString:@""]==NO && [hockeyAppKey rangeOfString:@"HOCKEY_APP_KEY"].location == NSNotFound ){
 
         // initialize before HockeySDK, so the delegate can access the file logger
         self.fileLogger = [[DDFileLogger alloc] init];
         self.fileLogger.maximumFileSize = (1024 * 64); // 64 KByte
         self.fileLogger.logFileManager.maximumNumberOfLogFiles = 1;
-        [self.fileLogger rollLogFileWithCompletionBlock:nil];
+ //       [self.fileLogger rollLogFileWithCompletionBlock:nil];
         [DDLog addLogger:self.fileLogger];
         
-        [[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:hockeyAppKey
+     //   [[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:hockeyAppKey
                                                              liveIdentifier:hockeyAppKey
                                                                    delegate:self];
         
-        [[BITHockeyManager sharedHockeyManager] startManager];
-        [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+     //   [[BITHockeyManager sharedHockeyManager] startManager];
+     //   [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
     }
     
     DDLogInfo(@"HockeyApp Plugin initialized");
