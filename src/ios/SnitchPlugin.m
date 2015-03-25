@@ -30,9 +30,7 @@ extern int ddLogLevel;
  //       [self.fileLogger rollLogFileWithCompletionBlock:nil];
         [DDLog addLogger:self.fileLogger];
         
-     //   [[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:hockeyAppKey
-                                                             liveIdentifier:hockeyAppKey
-                                                                   delegate:self];
+     //   [[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:hockeyAppKey liveIdentifier:hockeyAppKey delegate:self];
         
      //   [[BITHockeyManager sharedHockeyManager] startManager];
      //   [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
