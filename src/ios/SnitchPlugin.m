@@ -1,21 +1,21 @@
 //
-//  HockeyAppPlugin.m
+//  SnitchPlugin.m
 //
 
 #import <HockeySDK/HockeySDK.h>
 
-#import "HockeyAppPlugin.h"
+#import "SnitchPlugin.h"
 #import "DDFileLogger.h"
 
 extern int ddLogLevel;
 
-@interface HockeyAppPlugin ()
+@interface SnitchPlugin ()
 
 @property (nonatomic) DDFileLogger *fileLogger;
 
 @end
 
-@implementation HockeyAppPlugin
+@implementation SnitchPlugin
 
 #pragma mark Initialization
 
