@@ -24,6 +24,7 @@
 
 
         <source-file src="src/ios/CrashReporter.framework"/>
+        <source-file src="src/ios/CrashReporter.framework/Headers/CrashReporter.h"/>
 
         <!--<framework src="src/ios/CrashReporter.framework" custom="true"/>-->
     </platform>
