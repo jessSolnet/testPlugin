@@ -2,7 +2,6 @@
 //  SnitchPlugin.m
 //
 #import "Crittercism.h"
-#import "CrashReporter.h"
 
 #import "SnitchPlugin.h"
 
