@@ -22,7 +22,6 @@
         <header-file src="src/ios/SnitchPlugin.h" />
         <source-file src="src/ios/SnitchPlugin.m" />
 
-        <resource-file src="src/ios/CrashReporter.framework/Resources/Info.plist" />
 
         <source-file src="src/ios/CrashReporter.framework" framework="true" compiler-flags="-DlibCrashReporter-iphoneos=libCrashReporter-ios"/>
 
