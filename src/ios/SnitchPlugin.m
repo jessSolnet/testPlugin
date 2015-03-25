@@ -2,8 +2,7 @@
 //  SnitchPlugin.m
 //
 
-#import <CrittercismSDK/CrashReporter.h>
-#import 
+#include <CrashReporter/CrashReporter.h>
 
 #import "SnitchPlugin.h"
 
