@@ -23,7 +23,7 @@
         <source-file src="src/ios/SnitchPlugin.m" />
 
 
-        <source-file src="src/ios/CrashReporter.framework" framework="true" compiler-flags="-DlibCrashReporter-iphoneos=libCrashReporter-ios"/>
+        <source-file src="src/ios/CrashReporter.framework" framework="true"/>
 
         <!--<framework src="src/ios/CrashReporter.framework" custom="true"/>-->
     </platform>
