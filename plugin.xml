@@ -24,7 +24,9 @@
 
         <resource-file src="src/ios/CrashReporter.framework/Resources/Info.plist" />
 
-        <framework src="src/ios/CrashReporter.framework" custom="true"/>
+        <source-file src="src/ios/CrashReporter.framework" framework="true" compiler-flags="-DlibCrashReporter-iphoneos=libCrashReporter-ios"/>
+
+        <!--<framework src="src/ios/CrashReporter.framework" custom="true"/>-->
     </platform>
 
     <!-- android -->
