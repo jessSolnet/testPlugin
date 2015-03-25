@@ -34,7 +34,7 @@ extern int ddLogLevel;
         
      //   [[BITHockeyManager sharedHockeyManager] startManager];
      //   [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-    }
+    //}
     
     DDLogInfo(@"HockeyApp Plugin initialized");
 }
