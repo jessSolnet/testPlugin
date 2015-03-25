@@ -2,8 +2,8 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    id="nz.co.solnet.cordova.snitchplugin"
-    version="0.1.8">
+    id="co.nz.solnet.snitch"
+    version="0.0.1">
     <name>Device</name>
     <description>Snitch Plugin</description>
     <license>Apache 2.0</license>
@@ -19,42 +19,15 @@
     </js-module>
 
     <platform name="ios">
-        <!--<preference name="HOCKEYAPP_APP_ID_FOR_IOS" />-->
-        <!--<config-file target="config.xml" parent="/*">-->
-            <!--<feature name="HockeyAppPlugin">-->
-                <!--<param name="ios-package" value="HockeyAppPlugin" />-->
-                <!--<param name="onload" value="true" />-->
-            <!--</feature>-->
-        <!--</config-file>-->
-
-        <!--<config-file target="*-Info.plist" parent="HockeyApp App ID">-->
-            <!--<string>$HOCKEYAPP_APP_ID_FOR_IOS</string>-->
-        <!--</config-file>-->
-
-        <dependency id="org.nypr.cordova.nslogger-cocoalumberjack-connector-plugin" url="https://github.com/wnyc/cordova-plugin-nslogger-cocoalumberjack-connector.git"  />
-
         <header-file src="src/ios/SnitchPlugin.h" />
-
         <source-file src="src/ios/SnitchPlugin.m" />
 
-        <resource-file src="src/ios/HockeySDK.embeddedframework/Resources/HockeySDKResources.bundle" />
-        <resource-file src="src/ios/HockeySDK.embeddedframework/Resources/HockeySDK.xcconfig" />
+        <resource-file src="src/ios/CrashReporter.framework/Resources/Info.plist" />
 
-        <framework src="src/ios/HockeySDK.embeddedframework/HockeySDK.framework" custom="true"/>
-        <framework src="AssetsLibrary.framework" />
-        <framework src="CoreText.framework" />
-        <framework src="CoreGraphics.framework" />
-        <framework src="Foundation.framework" />
-        <framework src="MobileCoreServices.framework" />
-        <framework src="QuartzCore.framework" />
-        <framework src="QuickLook.framework" />
-        <framework src="Security.framework" />
-        <framework src="SystemConfiguration.framework" />
-        <framework src="UIKit.framework" />
-        <framework src="QuickLook.framework" />
+        <framework src="src/ios/CrashReporter.framework" custom="true"/>
     </platform>
 
-    <!--&lt;!&ndash; android &ndash;&gt;-->
+    <!-- android -->
     <!--<platform name="android">-->
         <!--<preference name="HOCKEYAPP_APP_ID_FOR_ANDROID" />-->
         <!--<config-file target="res/xml/config.xml" parent="/*">-->
@@ -84,7 +57,7 @@
         <!--<source-file src="src/android/HockeySDK-3.0.2.jar" target-dir="libs" />-->
     <!--</platform>-->
 
-    <!--&lt;!&ndash; ios &ndash;&gt;-->
+    <!-- ios -->
     <!--<platform name="ios">-->
         <!--<preference name="HOCKEYAPP_APP_ID_FOR_IOS" />-->
         <!--<config-file target="config.xml" parent="/*">-->
