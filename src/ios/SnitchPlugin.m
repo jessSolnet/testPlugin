@@ -17,7 +17,7 @@
 
 
 - (void)forcecrash:(CDVInvokedUrlCommand *)command {
-  [self handleCrashReport];
+  [self handleCrashReport];mkkm
 }
 
 //
