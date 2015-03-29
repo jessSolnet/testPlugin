@@ -54,12 +54,13 @@
 }
 
 - (void) sendCrashReport: (PLCrashReport *) report{
-    NSURL *url = [NSURL URLWithString:@"http://10.1.40.159:8080/snitchspring/CrashListener"]
+    NSURL *url = [NSURL URLWithString:@"http://10.1.40.159:8080/snitchspring/CrashListener"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"text/json" forHTTPHeaderField:@"Content-type"];
     
-    NSString *jsonString = [NSString stringWithFormat: @"{ dateTime: '%@', signalCode: '%@', signalName: '%@'}", report.systemInfo.timestamp, report.signalInfo.code, report.signalInfo.signalName];
+    NSString *jsonString = [NSString stringWithFormat: @"{ dateTime: '%@', signalCode: '%@', signalName: '%@'}",
+     report.systemInfo.timestamp, report.signalInfo.code, report.signalInfo.name];
 
     [request setValue:[NSString stringWithFormat:@"%d", [jsonString length]]
                        forHTTPHeaderField:@"Content-length"];
