@@ -57,7 +57,8 @@
     NSString *jsonString = [NSString stringWithFormat: @"{ dateTime: '%@', signalCode: '%@', signalName: '%@'}",
                             report.systemInfo.timestamp, report.signalInfo.code, report.signalInfo.name];
     
-    NSString *address = [NSString stringWithFormat @"http://10.1.40.159:8080/snitchspring/CrashListener?data=%@", jsonString];
+    NSString *address = [NSString stringWithFormat:
+                         @"http://10.1.40.159:8080/snitchspring/CrashListener?data=%@", jsonString];
 
 
     NSURL *url = [NSURL URLWithString:address];
