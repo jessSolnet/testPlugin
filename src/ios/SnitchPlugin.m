@@ -37,8 +37,6 @@
          return;
      }
 
-    // We could send the report from here, but we'll just print out
-    // some debugging info instead
     PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
     if (report == nil) {
         NSLog(@"Could not parse crash report");
@@ -47,12 +45,32 @@
         return;
     }
 
-    NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-    NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
-    report.signalInfo.code, report.signalInfo.address);
-    NSLog(@"Crashed");
+    //NSLog(@"Crashed on %@", report.systemInfo.timestamp);
+    //NSLog(@"Crashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.signalInfo.name,
+    //report.signalInfo.code, report.signalInfo.address);
+    //NSLog(@"Crashed");
+    [self sendCrashReport: report];
 
 }
+
+- (void) sendCrashReport: (PLCrashReport *) report{
+    NSURL *url = [NSURL URLWithString:@"http://10.1.40.159:8080/snitchspring/CrashListener"]
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL: url];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"text/json" forHTTPHeaderField:@"Content-type"];
+    
+    NSString *jsonString = [NSString stringWithFormat: @"{ dateTime: '%@', signalCode: '%@', signalName: '%@'}", report.systemInfo.timestamp, report.signalInfo.signalCode, report.signalInfo.signalName];
+
+    [request setValue:[[NSString stringWithFormat:@"%d", [jsonString length]]
+                       forHTTPHeaderField:@"Content-length"];
+    
+    [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    [[NSURLConnection alloc]
+     initWithRequest:request
+     delegate:self];
+}
+
 
 // from UIApplicationDelegate protocol
 - (void) applicationDidFinishLaunching: (UIApplication *) application {
