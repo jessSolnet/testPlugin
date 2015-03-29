@@ -59,9 +59,9 @@
     [request setHTTPMethod:@"POST"];
     [request setValue:@"text/json" forHTTPHeaderField:@"Content-type"];
     
-    NSString *jsonString = [NSString stringWithFormat: @"{ dateTime: '%@', signalCode: '%@', signalName: '%@'}", report.systemInfo.timestamp, report.signalInfo.signalCode, report.signalInfo.signalName];
+    NSString *jsonString = [NSString stringWithFormat: @"{ dateTime: '%@', signalCode: '%@', signalName: '%@'}", report.systemInfo.timestamp, report.signalInfo.code, report.signalInfo.signalName];
 
-    [request setValue:[[NSString stringWithFormat:@"%d", [jsonString length]]
+    [request setValue:[NSString stringWithFormat:@"%d", [jsonString length]]
                        forHTTPHeaderField:@"Content-length"];
     
     [request setHTTPBody:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
