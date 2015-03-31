@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d143565-6a3f-4eac-8a95-5261dd0673af" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ios/HWPHello.h" afterPath="$PROJECT_DIR$/src/ios/HWPHello.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="snitch-cordova-plugin.iws" />
@@ -50,21 +51,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HWPHello.m" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HWPHello.m" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ios/HWPHello.m">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7745303" vertical-offset="115" max-vertical-offset="594">
-              <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="594">
+              <caret line="0" column="3" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HWPHello.h" pinned="false" current-in-tab="false">
+      <file leaf-file-name="HWPHello.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ios/HWPHello.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
-              <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="492">
+              <caret line="0" column="1" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -87,8 +88,8 @@
         <option value="$PROJECT_DIR$/src/ios/SnitchPlugin.m" />
         <option value="$PROJECT_DIR$/src/ios/SnitchPlugin.h" />
         <option value="$PROJECT_DIR$/plugin.xml" />
-        <option value="$PROJECT_DIR$/src/ios/HWPHello.h" />
         <option value="$PROJECT_DIR$/src/ios/HWPHello.m" />
+        <option value="$PROJECT_DIR$/src/ios/HWPHello.h" />
       </list>
     </option>
   </component>
@@ -364,18 +365,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ios/HWPHello.h">
+    <entry file="file://$PROJECT_DIR$/src/ios/HWPHello.m">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="594">
+          <caret line="0" column="3" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ios/HWPHello.m">
+    <entry file="file://$PROJECT_DIR$/src/ios/HWPHello.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7745303" vertical-offset="115" max-vertical-offset="594">
-          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="492">
+          <caret line="0" column="1" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
           <folding />
         </state>
       </provider>
