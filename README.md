@@ -1,49 +1,49 @@
-# HockeyApp PhoneGap/PhoneGap Build/Cordova Plugin
+# Cordova Hello World Plugin
 
-### Platform Support
+Simple plugin that returns your string prefixed with hello.
 
-This plugin supports PhoneGap/PhoneGap Build/Cordova apps running on both iOS and Android.
+Greeting a user with "Hello, world" is something that could be done in JavaScript. This plugin provides a simple example demonstrating how Cordova plugins work.
 
-### Version Requirements
+## Using
+Clone the plugin
 
-This plugin is meant to work with Cordova 3.5.0+ and the latest version of the HockeyApp library.
+    $ git clone https://github.com/don/cordova-plugin-hello.git
 
-SDK documentation and integration guides for IOS and Android:  
-http://support.hockeyapp.net/kb/client-integration-ios-mac-os-x/hockeyapp-for-ios  
-http://support.hockeyapp.net/kb/client-integration-android-other-platforms/hockeyapp-for-android-sdk  
+Create a new Cordova Project
 
-TODO - update plugin to latest SDK versions 
+    $ cordova create hello com.example.helloapp Hello
+    
+Install the plugin
 
-## Installation
+    $ cd hello
+    $ cordova plugin install ../cordova-plugin-hello
+    
 
-#### Phonegap Build
+Edit `www/js/index.js` and add the following code inside `onDeviceReady`
 
-        <gap:plugin name="net.michaelgooden.cordova.hockeyappplugin" source="plugins.cordova.io" version="~0.1.8">
-          <param name="HOCKEYAPP_APP_ID_FOR_ANDROID" value="HOCKEY_APP_KEY" />
-          <param name="HOCKEYAPP_APP_ID_FOR_IOS" value="HOCKEY_APP_KEY" />
-        </gap:plugin>
+```js
+    var success = function(message) {
+        alert(message);
+    }
 
-Make sure to change `HOCKEY_APP_KEY` for your HockeyApp application ID for each platform.
+    var failure = function() {
+        alert("Error calling Hello Plugin");
+    }
 
-#### Automatic Installation using PhoneGap/Cordova CLI (iOS and Android)
- 1. Make sure you update your projects to Cordova version 3.5.0+ before installing this plugin.
+    hello.greet("World", success, failure);
+```
 
-        cordova platform update ios
-        cordova platform update android
+Install iOS or Android platform
 
- 2. Install this plugin using PhoneGap/Cordova CLI:
+    cordova platform add ios
+    cordova platform add android
+    
+Run the code
 
-        cordova plugin add net.michaelgooden.cordova.hockeyappplugin
+    cordova run 
 
- 3. Add your HockeyApp application IDs to your config.xml:
-     
-        <preference name="HOCKEYAPP_APP_ID_FOR_ANDROID" value="HOCKEY_APP_KEY" />
-        <preference name="HOCKEYAPP_APP_ID_FOR_IOS" value="HOCKEY_APP_KEY" />
+## More Info
 
-Make sure to change `HOCKEY_APP_KEY` for your HockeyApp application ID for each platform.
+For more information on setting up Cordova see [the documentation](http://cordova.apache.org/docs/en/4.0.0/guide_cli_index.md.html#The%20Command-Line%20Interface)
 
-TODO - better way to turn update check on/off (Android only) than having build script comment out code between __HOCKEY_APP_UPDATE_ACTIVE_START__ and __HOCKEY_APP_UPDATE_ACTIVE_END__ in HockeyAppPlugin.java 
-
-### Acknowledgements
-
-This plugin was forked from wnyc's original project at https://github.com/wnyc/cordova-plugin-hockeyapp.git
+For more info on plugins see the [Plugin Development Guide](http://cordova.apache.org/docs/en/4.0.0/guide_hybrid_plugins_index.md.html#Plugin%20Development%20Guide)

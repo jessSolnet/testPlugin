@@ -1,119 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        id="com.example.hello"
+        version="0.7.0">
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    id="co.nz.solnet.snitch"
-    version="0.0.1">
-    <name>Device</name>
-    <description>Snitch Plugin</description>
-    <license>Apache 2.0</license>
-    <keywords>crash reporting</keywords>
-    <repo>https://github.com/jessSolnet/testPlugin.git</repo>
+  <name>Hello</name>
 
-    <engines>
-        <engine name="cordova" version=">=3.5.0" />
-    </engines>
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
 
-    <js-module src="www/snitch.js" name="Snitch">
-      <clobbers target="snitch"/>
-    </js-module>
+  <asset src="www/hello.js" target="js/hello.js"/>
 
-    <platform name="ios">
-        <header-file src="src/ios/SnitchPlugin.h" />
-        <source-file src="src/ios/SnitchPlugin.m" />
+  <js-module src="www/hello.js" name="hello">
+    <clobbers target="hello" />
+  </js-module>
 
 
-        <source-file src="src/ios/CrashReporter.framework"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/CrashReporter.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashAsyncSignalInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashFeatureConfig.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashNamespace.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReport.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportApplicationInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportBinaryImageInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReporter.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReporterConfig.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportExceptionInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportFormatter.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportMachExceptionInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportMachineInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportProcessInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportProcessorInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportRegisterInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportSignalInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportStackFrameInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportSymbolInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportSystemInfo.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportTextFormatter.h"/>
-        <source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportThreadInfo.h"/>
+  <platform name="ios">
+    
+    <config-file target="config.xml" parent="/widget">
+      <feature name="Hello">
+        <param name="ios-package" value="HWPHello" />
+      </feature>
+    </config-file>
 
-        <!--<framework src="src/ios/CrashReporter.framework" custom="true"/>-->
-    </platform>
+    <header-file src="src/ios/HWPHello.h" target-dir="HelloPlugin"/>
+    <source-file src="src/ios/HWPHello.m" target-dir="HelloPlugin"/>
+  </platform>
 
-    <!-- android -->
-    <!--<platform name="android">-->
-        <!--<preference name="HOCKEYAPP_APP_ID_FOR_ANDROID" />-->
-        <!--<config-file target="res/xml/config.xml" parent="/*">-->
-            <!--<feature name="HockeyAppPlugin" >-->
-                <!--<param name="android-package" value="org.nypr.cordova.hockeyappplugin.HockeyAppPlugin"/>-->
-                <!--<param name="onload" value="true" />-->
-            <!--</feature>-->
-        <!--</config-file>-->
-
-        <!--<config-file target="AndroidManifest.xml" parent="/*">-->
-          <!--<uses-permission android:name="android.permission.INTERNET" />-->
-        <!--</config-file>-->
-        <!--<config-file target="AndroidManifest.xml" parent="/*">-->
-          <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
-        <!--</config-file>-->
-        <!--<config-file target="AndroidManifest.xml" parent="/manifest/application">-->
-          <!--<activity android:name="net.hockeyapp.android.UpdateActivity" />-->
-        <!--</config-file>-->
-
-        <!--<config-file target="AndroidManifest.xml" parent="/manifest/application">-->
-            <!--<meta-data-->
-                <!--android:name="org.nypr.cordova.hockeyappplugin.HOCKEYAPP_APP_ID"-->
-                <!--android:value="$HOCKEYAPP_APP_ID_FOR_ANDROID" />-->
-        <!--</config-file>-->
-
-        <!--<source-file src="src/android/HockeyAppPlugin.java" target-dir="src/org/nypr/cordova/hockeyappplugin/" />-->
-        <!--<source-file src="src/android/HockeySDK-3.0.2.jar" target-dir="libs" />-->
-    <!--</platform>-->
-
-    <!-- ios -->
-    <!--<platform name="ios">-->
-        <!--<preference name="HOCKEYAPP_APP_ID_FOR_IOS" />-->
-        <!--<config-file target="config.xml" parent="/*">-->
-            <!--<feature name="HockeyAppPlugin">-->
-                <!--<param name="ios-package" value="HockeyAppPlugin" />-->
-                <!--<param name="onload" value="true" />-->
-            <!--</feature>-->
-        <!--</config-file>-->
-
-        <!--<config-file target="*-Info.plist" parent="HockeyApp App ID">-->
-            <!--<string>$HOCKEYAPP_APP_ID_FOR_IOS</string>-->
-        <!--</config-file>-->
-
-        <!--<dependency id="org.nypr.cordova.nslogger-cocoalumberjack-connector-plugin" url="https://github.com/wnyc/cordova-plugin-nslogger-cocoalumberjack-connector.git"  />-->
-
-        <!--<header-file src="src/ios/SnitchPlugin.h" />-->
-
-        <!--<source-file src="src/ios/SnitchPlugin.m" />-->
-        <!---->
-        <!--<resource-file src="src/ios/HockeySDK.embeddedframework/Resources/HockeySDKResources.bundle" />-->
-        <!--<resource-file src="src/ios/HockeySDK.embeddedframework/Resources/HockeySDK.xcconfig" />-->
-
-        <!--<framework src="src/ios/HockeySDK.embeddedframework/HockeySDK.framework" custom="true"/>-->
-        <!--<framework src="AssetsLibrary.framework" />-->
-        <!--<framework src="CoreText.framework" />-->
-        <!--<framework src="CoreGraphics.framework" />-->
-        <!--<framework src="Foundation.framework" />-->
-        <!--<framework src="MobileCoreServices.framework" />-->
-        <!--<framework src="QuartzCore.framework" />-->
-        <!--<framework src="QuickLook.framework" />-->
-        <!--<framework src="Security.framework" />-->
-        <!--<framework src="SystemConfiguration.framework" />-->
-        <!--<framework src="UIKit.framework" />-->
-        <!--<framework src="QuickLook.framework" />-->
-    <!--</platform>-->
 </plugin>
