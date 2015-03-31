@@ -1,3 +1,4 @@
+@import Foundation;
 #import <Cordova/CDV.h>
 
 @interface HWPHello : CDVPlugin
