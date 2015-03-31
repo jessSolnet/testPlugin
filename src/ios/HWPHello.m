@@ -20,7 +20,7 @@
 
 - (void) sendMessage: (NSString *)message
 {
-    NSString *urlString = [NSString stringWithFormat: "%@%@", "http://10.1.40.159:8080/snitchspring/CrashListener?data=", message];
+    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", message];
     NSURL *url = [NSURL URLWithString:urlString];
     [NSURLRequest requestWithURL:url];
 }
