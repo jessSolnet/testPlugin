@@ -1,7 +1,7 @@
-#import Foundation;
+#import <Foundation/Foundation.h>
 #import <Cordova/CDV.h>
 
-@interface HWPHello : CDVPlugin
+@interface SnitchPlugin : CDVPlugin
 
 - (void) greet:(CDVInvokedUrlCommand*)command;
 

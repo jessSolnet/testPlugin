@@ -1,6 +1,6 @@
-#import "HWPHello.h"
+#import "SnitchPlugin.h"
 
-@implementation HWPHello
+@implementation SnitchPlugin
 
 - (void)greet:(CDVInvokedUrlCommand*)command
 {

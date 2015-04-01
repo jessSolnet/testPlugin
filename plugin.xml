@@ -20,12 +20,12 @@
     
     <config-file target="config.xml" parent="/widget">
       <feature name="Hello">
-        <param name="ios-package" value="HWPHello" />
+        <param name="ios-package" value="SnitchPlugin" />
       </feature>
     </config-file>
 
-    <header-file src="src/ios/HWPHello.h" target-dir="HelloPlugin"/>
-    <source-file src="src/ios/HWPHello.m" target-dir="HelloPlugin"/>
+    <header-file src="src/ios/SnitchPlugin.h" target-dir="HelloPlugin"/>
+    <source-file src="src/ios/SnitchPlugin.m" target-dir="HelloPlugin"/>
   </platform>
 
 </plugin>
