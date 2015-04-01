@@ -9,11 +9,11 @@
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
 
+    NSString* msgAndResponse = [self sendMessage: msg];
+    
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
-                               messageAsString:msg];
-
-    [self sendMessage: msg];
+                               messageAsString:msgAndResponse];
     
     [self success:result callbackId:callbackId];
 }
@@ -22,7 +22,9 @@
 {
     NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", message];
     NSURL *url = [NSURL URLWithString:urlString];
-    [NSURLRequest requestWithURL:url];
+    NSError* error = nil;
+    NSString *response =  [NSString stringWithContentsOfURL:TheUrl encoding:NSASCIIStringEncoding error:&error];
+    return [NSString stringWithFormat @"%@: %@", message, response];
 }
 
 @end
