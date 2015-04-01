@@ -23,8 +23,8 @@
     NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", message];
     NSURL *url = [NSURL URLWithString:urlString];
     NSError* error = nil;
-    NSString *response =  [NSString stringWithContentsOfURL:TheUrl encoding:NSASCIIStringEncoding error:&error];
-    return [NSString stringWithFormat @"%@: %@", message, response];
+    NSString *response =  [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
+    return [NSString stringWithFormat: @"%@: %@", message, response];
 }
 
 @end
