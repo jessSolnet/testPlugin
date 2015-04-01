@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6d143565-6a3f-4eac-8a95-5261dd0673af" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ios/SnitchPlugin.m" afterPath="$PROJECT_DIR$/src/ios/SnitchPlugin.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="snitch-cordova-plugin.iws" />
     <ignored path=".idea/workspace.xml" />

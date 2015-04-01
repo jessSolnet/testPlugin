@@ -20,11 +20,30 @@
 
 - (NSString *) sendMessage: (NSString *)message
 {
-    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", message];
+    NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                                                        (CFStringRef) message,
+                                                                                                        NULL,
+                                                                                                        (CFStringRef) @"!*'();:@&=+$,/?%#[]",
+                                                                                                        kCFStringEncodingUTF8));
+    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", encodedMessage];
+    
     NSURL *url = [NSURL URLWithString:urlString];
-    NSError* error = nil;
-    NSString *response =  [NSString stringWithContentsOfURL:url encoding:NSASCIIStringEncoding error:&error];
-    return [NSString stringWithFormat: @"%@: %@", message, response];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:url];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if([responseCode statusCode] != 200){
+        NSLog(@"Error getting %@, HTTP status code %li", urlString, (long)[responseCode statusCode]);
+        return nil;
+    }
+    
+    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
 
 @end
