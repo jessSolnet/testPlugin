@@ -4,5 +4,6 @@
 @interface SnitchPlugin : CDVPlugin
 
 - (void) onStartup:(CDVInvokedUrlCommand*)command;
+@property BOOL crashReportComplete;
 
 @end

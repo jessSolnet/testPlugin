@@ -5,22 +5,8 @@
 
 @implementation SnitchPlugin
 
-static CrashHelper *_sharedManager = nil;
+static NSString *crashPath;
 static BOOL _hasCrashReportPending;
-
-/**
- Singleton Shared Instance of App Crash Helper
- */
-+ (CrashHelper *)sharedCrashHelper {
-    static dispatch_once_t oncePredicate;
-    dispatch_once(&oncePredicate, ^{
-        if (_sharedManager == nil) {
-            _sharedManager = [[self alloc] init];
-            _sharedManager.crashReportComplete = NO;
-        }
-    });
-    return _sharedManager;
-}
 
 /** getter for hasCrashReportPending */
 + (BOOL)hasCrashReportPending {
