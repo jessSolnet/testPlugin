@@ -69,7 +69,6 @@ NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByA
     //	PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData error:&error];
     	if (report == nil) {
     		NSLog(@"Could not parse crash report");
-    		[self finishCrashReporter:crashReporter];
     		return;
     	}
 
