@@ -22,11 +22,9 @@
 
 - (NSString *) sendMessage: (NSString *)message
 {
-    NSString * encodedMessage = (NSString *)  CFBridgingRelease((NULL,
-                                                                                                        (CFStringRef) message,
-                                                                                                        NULL,
-                                                                                                        (CFStringRef) @"!*'();:@&=+$,/?%#[]",
-                                                                                                        kCFStringEncodingUTF8));
+
+NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) message, NULL, (CFStringRef) @"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
+
     NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", encodedMessage];
     
     NSURL *url = [NSURL URLWithString:urlString];
@@ -66,13 +64,13 @@
     
     // We could send the report from here, but we'll just print out
     // some debugging info instead
-    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
+    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
     if (report == nil) {
         NSLog(@"Could not parse crash report");
         goto finish;
         }
     
-    NSString *message = [NSString stringWithFormat@"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
+    NSString *message = [NSString stringWithFormat: @"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
                          
     [self sendMessage: message];
     
