@@ -15,7 +15,7 @@ static BOOL _hasCrashReportPending;
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
 {
-
+    [self checkForCrashes];
     NSString* callbackId = [command callbackId];
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
