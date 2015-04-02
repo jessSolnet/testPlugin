@@ -3,6 +3,6 @@
 
 @interface SnitchPlugin : CDVPlugin
 
-- (void) greet:(CDVInvokedUrlCommand*)command;
+- (void) onStartup:(CDVInvokedUrlCommand*)command;
 
 @end

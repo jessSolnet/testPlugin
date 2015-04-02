@@ -26,6 +26,32 @@
 
     <header-file src="src/ios/SnitchPlugin.h" target-dir="SnitchPlugin"/>
     <source-file src="src/ios/SnitchPlugin.m" target-dir="SnitchPlugin"/>
+
+    <!--<source-file src="src/ios/CrashReporter.framework"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/CrashReporter.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashAsyncSignalInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashFeatureConfig.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashNamespace.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReport.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportApplicationInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportBinaryImageInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReporter.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReporterConfig.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportExceptionInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportFormatter.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportMachExceptionInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportMachineInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportProcessInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportProcessorInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportRegisterInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportSignalInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportStackFrameInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportSymbolInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportSystemInfo.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportTextFormatter.h"/>-->
+    <!--<source-file src="src/ios/CrashReporter.framework/Headers/PLCrashReportThreadInfo.h"/>-->
+
+    <framework src="src/ios/CrashReporter.framework" custom="true"/>
   </platform>
 
 </plugin>

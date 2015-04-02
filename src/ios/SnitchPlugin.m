@@ -2,17 +2,7 @@
 
 @implementation SnitchPlugin
 
-- (id)init
-{
-    self = [super init];
-    if (self)
-    {
-        [self sendMessage: @"plugin initialised"];
-    }
-    return self;
-}
-
-- (void)greet:(CDVInvokedUrlCommand*)command
+- (void)onStartup:(CDVInvokedUrlCommand*)command
 {
 
     NSString* callbackId = [command callbackId];
