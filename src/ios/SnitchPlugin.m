@@ -59,7 +59,6 @@ NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByA
     	crashData = [crashReporter loadPendingCrashReportDataAndReturnError:&error];
     	if (crashData == nil) {
     		NSLog(@"Could not load crash report: %@", error);
-    		[self finishCrashReporter:crashReporter];
     		return;
     	}
 
