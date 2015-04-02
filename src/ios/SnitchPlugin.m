@@ -1,4 +1,6 @@
 #import "SnitchPlugin.h"
+#import <CrashReporter/CrashReporter.h>
+
 
 @implementation SnitchPlugin
 
@@ -20,7 +22,7 @@
 
 - (NSString *) sendMessage: (NSString *)message
 {
-    NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+    NSString * encodedMessage = (NSString *)  CFBridgingRelease((NULL,
                                                                                                         (CFStringRef) message,
                                                                                                         NULL,
                                                                                                         (CFStringRef) @"!*'();:@&=+$,/?%#[]",
@@ -45,5 +47,56 @@
     
     return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
+
+
+//
+// Called to handle a pending crash report.
+//
+- (void) handleCrashReport {
+    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    NSData *crashData;
+    NSError *error;
+    
+    // Try loading the crash report
+    crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
+    if (crashData == nil) {
+        NSLog(@"Could not load crash report: %@", error);
+        goto finish;
+        }
+    
+    // We could send the report from here, but we'll just print out
+    // some debugging info instead
+    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
+    if (report == nil) {
+        NSLog(@"Could not parse crash report");
+        goto finish;
+        }
+    
+    NSString *message = [NSString stringWithFormat@"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address);
+                         
+    [self sendMessage: message];
+    
+    // Purge the report
+    finish:
+    [crashReporter purgePendingCrashReport];
+    return;
+    }
+
+// from UIApplicationDelegate protocol
+- (void) applicationDidFinishLaunching: (UIApplication *) application {
+    [self sendMessage: @"applicationDidFinishLaunching"]
+    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    NSError *error;
+    
+    // Check if we previously crashed
+    if ([crashReporter hasPendingCrashReport])
+        [self handleCrashReport];
+    // Enable the Crash Reporter
+    if (![crashReporter enableCrashReporterAndReturnError: &error])
+        NSLog(@"Warning: Could not enable crash reporter: %@", error);
+    
+    }
+
+
 
 @end
