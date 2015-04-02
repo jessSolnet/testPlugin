@@ -72,7 +72,7 @@
         goto finish;
         }
     
-    NSString *message = [NSString stringWithFormat@"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address);
+    NSString *message = [NSString stringWithFormat@"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
                          
     [self sendMessage: message];
     
@@ -84,7 +84,7 @@
 
 // from UIApplicationDelegate protocol
 - (void) applicationDidFinishLaunching: (UIApplication *) application {
-    [self sendMessage: @"applicationDidFinishLaunching"]
+    [self sendMessage: @"applicationDidFinishLaunching"];
     PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
     NSError *error;
     
