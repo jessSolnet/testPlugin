@@ -1,8 +1,31 @@
 #import "SnitchPlugin.h"
 #import "CrashReporter.h"
 
+#define kCrashFileName @"CrashReport"
 
 @implementation SnitchPlugin
+
+static CrashHelper *_sharedManager = nil;
+static BOOL _hasCrashReportPending;
+
+/**
+ Singleton Shared Instance of App Crash Helper
+ */
++ (CrashHelper *)sharedCrashHelper {
+    static dispatch_once_t oncePredicate;
+    dispatch_once(&oncePredicate, ^{
+        if (_sharedManager == nil) {
+            _sharedManager = [[self alloc] init];
+            _sharedManager.crashReportComplete = NO;
+        }
+    });
+    return _sharedManager;
+}
+
+/** getter for hasCrashReportPending */
++ (BOOL)hasCrashReportPending {
+    return _hasCrashReportPending;
+}
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
 {
@@ -18,32 +41,6 @@
                                messageAsString:msgAndResponse];
     
     [self success:result callbackId:callbackId];
-}
-
-- (NSString *) sendMessage: (NSString *)message
-{
-
-NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) message, NULL, (CFStringRef) @"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
-
-    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", encodedMessage];
-    
-    NSURL *url = [NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setHTTPMethod:@"GET"];
-    [request setURL:url];
-    
-    NSError *error = [[NSError alloc] init];
-    NSHTTPURLResponse *responseCode = nil;
-    
-    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
-    
-    if([responseCode statusCode] != 200){
-        NSLog(@"Error getting %@, HTTP status code %li", urlString, (long)[responseCode statusCode]);
-        return nil;
-    }
-    
-    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
 }
 
 
@@ -72,27 +69,96 @@ NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByA
     	}
 
     	NSString *message = [NSString stringWithFormat: @"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
-
+        
         [self sendMessage: message];
+        [self saveCrashReport:crashReporter];
+
 
     	return;
     }
 
-// from UIApplicationDelegate protocol
-- (void) applicationDidFinishLaunching: (UIApplication *) application {
-    [self sendMessage: @"applicationDidFinishLaunching"];
+/** Method runs, if a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X.
+ @param crashReporter:PLCrashReporter instance to be used
+ */
+- (void)saveCrashReport:(PLCrashReporter *)reporter {
+    if (![reporter hasPendingCrashReport])
+        return;
+    
+#if TARGET_OS_IPHONE
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *error;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    if (![fm createDirectoryAtPath:documentsDirectory withIntermediateDirectories:YES attributes:nil error:&error]) {
+        NSLog(@"Could not create documents directory: %@", error);
+        return;
+    }
+    
+    
+    NSData *data = [[PLCrashReporter sharedReporter] loadPendingCrashReportDataAndReturnError:&error];
+    if (data == nil) {
+        NSLog(@"Failed to load crash report data: %@", error);
+        return;
+    }
+    
+    NSString *outputPath = [documentsDirectory stringByAppendingPathComponent:kCrashFileName];
+    if (![data writeToFile:outputPath atomically:YES]) {
+        NSLog(@"Failed to write crash report");
+        return;
+    }
+    
+    crashPath = outputPath;
+    [reporter purgePendingCrashReport];
+    self.crashReportComplete = YES;
+    
+#endif
+}
+
+
+/**
+ Method to check for any crashes, only call from UIApplicationDelegate
+ */
+- (void)checkForCrashes {
     PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
     NSError *error;
     
     // Check if we previously crashed
-    if ([crashReporter hasPendingCrashReport])
+    _hasCrashReportPending = [crashReporter hasPendingCrashReport];
+    if (_hasCrashReportPending) {
+        self.crashReportComplete = NO;
         [self handleCrashReport];
-    // Enable the Crash Reporter
-    if (![crashReporter enableCrashReporterAndReturnError: &error])
-        NSLog(@"Warning: Could not enable crash reporter: %@", error);
-    
     }
+    // Enable the Crash Reporter
+    if (![crashReporter enableCrashReporterAndReturnError:&error])
+        NSLog(@"Warning: Could not enable crash reporter: %@", error);
+}
 
+- (NSString *) sendMessage: (NSString *)message
+{
+    
+    NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) message, NULL, (CFStringRef) @"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
+    
+    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.40.159:8080/snitchspring/CrashListener?data=", encodedMessage];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:url];
+    
+    NSError *error = [[NSError alloc] init];
+    NSHTTPURLResponse *responseCode = nil;
+    
+    NSData *oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&responseCode error:&error];
+    
+    if([responseCode statusCode] != 200){
+        NSLog(@"Error getting %@, HTTP status code %li", urlString, (long)[responseCode statusCode]);
+        return nil;
+    }
+    
+    return [[NSString alloc] initWithData:oResponseData encoding:NSUTF8StringEncoding];
+}
 
 
 @end
