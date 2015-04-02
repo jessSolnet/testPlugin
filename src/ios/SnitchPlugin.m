@@ -50,34 +50,34 @@ NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByA
 //
 // Called to handle a pending crash report.
 //
-- (void) handleCrashReport {
-    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    NSData *crashData;
-    NSError *error;
-    
-    // Try loading the crash report
-    crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
-    if (crashData == nil) {
-        NSLog(@"Could not load crash report: %@", error);
-        goto finish;
-        }
-    
-    // We could send the report from here, but we'll just print out
-    // some debugging info instead
-    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
-    if (report == nil) {
-        NSLog(@"Could not parse crash report");
-        goto finish;
-        }
-    
-    NSString *message = [NSString stringWithFormat: @"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
-                         
-    [self sendMessage: message];
-    
-    // Purge the report
-    finish:
-    [crashReporter purgePendingCrashReport];
-    return;
+    - (void)handleCrashReport {
+    	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    	NSData *crashData;
+    	NSError *error;
+
+    	// Try loading the crash report
+    	crashData = [crashReporter loadPendingCrashReportDataAndReturnError:&error];
+    	if (crashData == nil) {
+    		NSLog(@"Could not load crash report: %@", error);
+    		[self finishCrashReporter:crashReporter];
+    		return;
+    	}
+
+    	// We could send the report from here, but we'll just print out
+    	// some debugging info instead
+        PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData error:&error];
+    //	PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData error:&error];
+    	if (report == nil) {
+    		NSLog(@"Could not parse crash report");
+    		[self finishCrashReporter:crashReporter];
+    		return;
+    	}
+
+    	NSString *message = [NSString stringWithFormat: @"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
+
+        [self sendMessage: message];
+
+    	return;
     }
 
 // from UIApplicationDelegate protocol
