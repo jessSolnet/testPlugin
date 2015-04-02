@@ -1,5 +1,5 @@
 #import "SnitchPlugin.h"
-#import <CrashReporter/CrashReporter.h>
+#import "CrashReporter.h"
 
 
 @implementation SnitchPlugin
