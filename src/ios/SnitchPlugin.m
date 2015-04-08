@@ -21,7 +21,6 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
 {
-    [self checkForCrashes];
     NSString* callbackId = [command callbackId];
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
@@ -39,6 +38,7 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     };
     [[PLCrashReporter sharedReporter] setCrashCallbacks: &cb];
     
+        NSError *error = nil;
     /* Enable the crash reporter */
     if (![[PLCrashReporter sharedReporter] enableCrashReporterAndReturnError: &error]) {
         NSLog(@"Could not enable crash reporter: %@", error);
