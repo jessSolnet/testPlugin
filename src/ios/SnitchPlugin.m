@@ -13,6 +13,12 @@ static BOOL _hasCrashReportPending;
     return _hasCrashReportPending;
 }
 
+/* A custom post-crash callback */
+void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
+    // this is not async-safe, but this is a test implementation
+    NSLog(@"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context);
+}
+
 - (void)onStartup:(CDVInvokedUrlCommand*)command
 {
     [self checkForCrashes];
@@ -22,6 +28,22 @@ static BOOL _hasCrashReportPending;
 
     NSString* msgAndResponse = [self sendMessage: msg];
     
+    /* Save any existing crash report. */
+    save_crash_report();
+    
+    /* Set up post-crash callbacks */
+    PLCrashReporterCallbacks cb = {
+        .version = 0,
+        .context = (void *) 0xABABABAB,
+        .handleSignal = post_crash_callback
+    };
+    [[PLCrashReporter sharedReporter] setCrashCallbacks: &cb];
+    
+    /* Enable the crash reporter */
+    if (![[PLCrashReporter sharedReporter] enableCrashReporterAndReturnError: &error]) {
+        NSLog(@"Could not enable crash reporter: %@", error);
+    }
+    
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
                                messageAsString:msgAndResponse];
@@ -29,45 +51,9 @@ static BOOL _hasCrashReportPending;
     [self success:result callbackId:callbackId];
 }
 
-
-//
-// Called to handle a pending crash report.
-//
-    - (void)handleCrashReport {
-    	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    	NSData *crashData;
-    	NSError *error;
-
-    	// Try loading the crash report
-    	crashData = [crashReporter loadPendingCrashReportDataAndReturnError:&error];
-    	if (crashData == nil) {
-    		NSLog(@"Could not load crash report: %@", error);
-    		return;
-    	}
-
-    	// We could send the report from here, but we'll just print out
-    	// some debugging info instead
-        PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData error:&error];
-    //	PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData error:&error];
-    	if (report == nil) {
-    		NSLog(@"Could not parse crash report");
-    		return;
-    	}
-
-    	NSString *message = [NSString stringWithFormat: @"Crashed on %@\r\nCrashed with signal %@ (code %@, address=0x%" PRIx64 ")", report.systemInfo.timestamp, report.signalInfo.name, report.signalInfo.code, report.signalInfo.address];
-        
-        [self sendMessage: message];
-        [self saveCrashReport:crashReporter];
-
-
-    	return;
-    }
-
-/** Method runs, if a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X.
- @param crashReporter:PLCrashReporter instance to be used
- */
-- (void)saveCrashReport:(PLCrashReporter *)reporter {
-    if (![reporter hasPendingCrashReport])
+/* If a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X. */
+static void save_crash_report () {
+    if (![[PLCrashReporter sharedReporter] hasPendingCrashReport])
         return;
     
 #if TARGET_OS_IPHONE
@@ -76,49 +62,28 @@ static BOOL _hasCrashReportPending;
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    if (![fm createDirectoryAtPath:documentsDirectory withIntermediateDirectories:YES attributes:nil error:&error]) {
+    if (![fm createDirectoryAtPath: documentsDirectory withIntermediateDirectories: YES attributes:nil error: &error]) {
         NSLog(@"Could not create documents directory: %@", error);
         return;
     }
     
     
-    NSData *data = [[PLCrashReporter sharedReporter] loadPendingCrashReportDataAndReturnError:&error];
+    NSData *data = [[PLCrashReporter sharedReporter] loadPendingCrashReportDataAndReturnError: &error];
     if (data == nil) {
         NSLog(@"Failed to load crash report data: %@", error);
         return;
     }
     
-    NSString *outputPath = [documentsDirectory stringByAppendingPathComponent:kCrashFileName];
-    if (![data writeToFile:outputPath atomically:YES]) {
+    NSString *outputPath = [documentsDirectory stringByAppendingPathComponent: @"demo.plcrash"];
+    if (![data writeToFile: outputPath atomically: YES]) {
         NSLog(@"Failed to write crash report");
-        return;
     }
     
-    crashPath = outputPath;
-    [reporter purgePendingCrashReport];
-    self.crashReportComplete = YES;
-    
+    NSLog(@"Saved crash report to: %@", outputPath);
 #endif
 }
 
 
-/**
- Method to check for any crashes, only call from UIApplicationDelegate
- */
-- (void)checkForCrashes {
-    PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    NSError *error;
-    
-    // Check if we previously crashed
-    _hasCrashReportPending = [crashReporter hasPendingCrashReport];
-    if (_hasCrashReportPending) {
-        self.crashReportComplete = NO;
-        [self handleCrashReport];
-    }
-    // Enable the Crash Reporter
-    if (![crashReporter enableCrashReporterAndReturnError:&error])
-        NSLog(@"Warning: Could not enable crash reporter: %@", error);
-}
 
 - (NSString *) sendMessage: (NSString *)message
 {
