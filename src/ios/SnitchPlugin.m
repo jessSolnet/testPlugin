@@ -17,6 +17,8 @@ static BOOL _hasCrashReportPending;
 void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     // this is not async-safe, but this is a test implementation
     NSLog(@"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context);
+    NSString *msg = [NSString stringWithFormat: @"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context];
+    NSString* msgAndResponse = [self sendMessage: msg];
 }
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
@@ -78,8 +80,11 @@ static void save_crash_report () {
     if (![data writeToFile: outputPath atomically: YES]) {
         NSLog(@"Failed to write crash report");
     }
-    
     NSLog(@"Saved crash report to: %@", outputPath);
+
+    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath];
+    NSString* msgAndResponse = [self sendMessage: msg];
+
 #endif
 }
 
