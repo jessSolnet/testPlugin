@@ -14,11 +14,11 @@ static BOOL _hasCrashReportPending;
 }
 
 /* A custom post-crash callback */
-- (void) post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
+void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     // this is not async-safe, but this is a test implementation
     NSLog(@"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context);
     NSString *msg = [NSString stringWithFormat: @"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context];
-    NSString* msgAndResponse = [self sendMessage: msg];
+    NSString* msgAndResponse = [SnitchPlugin sendMessage: msg];
 }
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
@@ -27,7 +27,7 @@ static BOOL _hasCrashReportPending;
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
 
-    NSString* msgAndResponse = [self sendMessage: msg];
+    NSString* msgAndResponse = [SnitchPlugin sendMessage: msg];
     
     /* Save any existing crash report. */
     save_crash_report();
@@ -54,7 +54,7 @@ static BOOL _hasCrashReportPending;
 }
 
 /* If a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X. */
-- (void)save_crash_report () {
+static void save_crash_report () {
     if (![[PLCrashReporter sharedReporter] hasPendingCrashReport])
         return;
     
@@ -82,15 +82,14 @@ static BOOL _hasCrashReportPending;
     }
     NSLog(@"Saved crash report to: %@", outputPath);
 
-    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath];
-    NSString* msgAndResponse = [self sendMessage: msg];
+    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath]
+    NSString* msgAndResponse = [SnitchPlugin sendMessage: msg];
 
 #endif
 }
 
 
-
-- (NSString *) sendMessage: (NSString *)message
++ (NSString *) sendMessage: (NSString *)message
 {
     
     NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) message, NULL, (CFStringRef) @"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
