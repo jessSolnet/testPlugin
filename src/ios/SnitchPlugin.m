@@ -7,6 +7,7 @@
 
 static NSString *crashPath;
 static BOOL _hasCrashReportPending;
+static SnitchPlugin *staticSelf;
 
 /** getter for hasCrashReportPending */
 + (BOOL)hasCrashReportPending {
@@ -18,16 +19,19 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     // this is not async-safe, but this is a test implementation
     NSLog(@"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context);
     NSString *msg = [NSString stringWithFormat: @"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context];
-    NSString* msgAndResponse = [SnitchPlugin sendMessage: msg];
+    NSString* msgAndResponse = [staticSelf sendMessage: msg];
+
 }
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
 {
+    staticSelf = self;
+    
     NSString* callbackId = [command callbackId];
     NSString* name = [[command arguments] objectAtIndex:0];
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
 
-    NSString* msgAndResponse = [SnitchPlugin sendMessage: msg];
+    NSString* msgAndResponse = [self sendMessage: msg];
     
     /* Save any existing crash report. */
     save_crash_report();
@@ -82,14 +86,15 @@ static void save_crash_report () {
     }
     NSLog(@"Saved crash report to: %@", outputPath);
 
-    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath];
-    NSString* msgAndResponse = [SnitchPlugin sendMessage: msg];
+    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath]
+    NSString* msgAndResponse = [staticSelf sendMessage: msg];
 
 #endif
 }
 
 
-+ (NSString *) sendMessage: (NSString *)message
+
+- (NSString *) sendMessage: (NSString *)message
 {
     
     NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) message, NULL, (CFStringRef) @"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
