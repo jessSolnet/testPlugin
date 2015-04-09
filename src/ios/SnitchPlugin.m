@@ -86,7 +86,7 @@ static void save_crash_report () {
     }
     NSLog(@"Saved crash report to: %@", outputPath);
 
-    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath]
+    NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath];
     NSString* msgAndResponse = [staticSelf sendMessage: msg];
 
 #endif
