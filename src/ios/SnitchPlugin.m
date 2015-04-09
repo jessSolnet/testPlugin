@@ -14,7 +14,7 @@ static BOOL _hasCrashReportPending;
 }
 
 /* A custom post-crash callback */
-void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
+- (void) post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     // this is not async-safe, but this is a test implementation
     NSLog(@"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context);
     NSString *msg = [NSString stringWithFormat: @"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context];
@@ -54,7 +54,7 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
 }
 
 /* If a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X. */
-static void save_crash_report () {
+- (void)save_crash_report () {
     if (![[PLCrashReporter sharedReporter] hasPendingCrashReport])
         return;
     
