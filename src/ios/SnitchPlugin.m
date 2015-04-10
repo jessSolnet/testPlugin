@@ -7,7 +7,6 @@
 
 static NSString *crashPath;
 static BOOL _hasCrashReportPending;
-static SnitchPlugin *staticSelf;
 
 /** getter for hasCrashReportPending */
 + (BOOL)hasCrashReportPending {
@@ -15,19 +14,17 @@ static SnitchPlugin *staticSelf;
 }
 
 /* A custom post-crash callback */
-void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
+- (void) post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     // this is not async-safe, but this is a test implementation
     NSLog(@"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context);
     NSString *msg = [NSString stringWithFormat: @"post crash callback: signo=%d, uap=%p, context=%p", info->si_signo, uap, context];
-    NSString* msgAndResponse = [staticSelf sendMessage: msg];
+    NSString* msgAndResponse = [self sendMessage: msg];
 
 }
 
-- (void)onStartup:(CDVInvokedUrlCommand*)command
+- (void) onStartup:(CDVInvokedUrlCommand*)command
 {
     NSLog(@"           Here1");
-
-    staticSelf = self;
     
     NSString* callbackId = [command callbackId];
     NSString* name = [[command arguments] objectAtIndex:0];
@@ -44,7 +41,7 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     PLCrashReporterCallbacks cb = {
         .version = 0,
         .context = (void *) 0xABABABAB,
-        .handleSignal = post_crash_callback
+        .handleSignal = [self post_crash_callback]
     };
     [[PLCrashReporter sharedReporter] setCrashCallbacks: &cb];
     
@@ -62,7 +59,7 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
 }
 
 /* If a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X. */
-static void save_crash_report () {
+- (void) save_crash_report () {
     if (![[PLCrashReporter sharedReporter] hasPendingCrashReport])
         return;
     
@@ -91,7 +88,7 @@ static void save_crash_report () {
     NSLog(@"Saved crash report to: %@", outputPath);
 
     NSString *msg = [NSString stringWithFormat: @"Saved crash report to: %@", outputPath];
-    NSString* msgAndResponse = [staticSelf sendMessage: msg];
+    NSString* msgAndResponse = [self sendMessage: msg];
 
 #endif
 }
