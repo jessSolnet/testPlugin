@@ -45,11 +45,11 @@ static BOOL _hasCrashReportPending;
     };
     [[PLCrashReporter sharedReporter] setCrashCallbacks: &cb];
     
-        NSError *error = nil;
-    /* Enable the crash reporter */
-    if (![[PLCrashReporter sharedReporter] enableCrashReporterAndReturnError: &error]) {
-        NSLog(@"Could not enable crash reporter: %@", error);
-    }
+//        NSError *error = nil;
+//    /* Enable the crash reporter */
+//    if (![[PLCrashReporter sharedReporter] enableCrashReporterAndReturnError: &error]) {
+//        NSLog(@"Could not enable crash reporter: %@", error);
+//    }
     
     CDVPluginResult* result = [CDVPluginResult
                                resultWithStatus:CDVCommandStatus_OK
