@@ -25,6 +25,8 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
 
 - (void)onStartup:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"           Here1");
+
     staticSelf = self;
     
     NSString* callbackId = [command callbackId];
@@ -32,10 +34,12 @@ void post_crash_callback (siginfo_t *info, ucontext_t *uap, void *context) {
     NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
 
     NSString* msgAndResponse = [self sendMessage: msg];
+    NSLog(@"           Here2");
     
     /* Save any existing crash report. */
     save_crash_report();
-    
+    NSLog(@"           Here3");
+
     /* Set up post-crash callbacks */
     PLCrashReporterCallbacks cb = {
         .version = 0,
