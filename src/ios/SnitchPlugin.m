@@ -7,14 +7,16 @@
 
 - (void) onStartup:(CDVInvokedUrlCommand*)command
 {
-    NSLog(@"           Here1");
-    
-    NSString* callbackId = [command callbackId];
-    NSString* name = [[command arguments] objectAtIndex:0];
-    NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
-
-    NSString* msgAndResponse = [self sendMessage: msg];
-    NSLog(@"           Here2");
+    [self.commandDelegate runInBackground:^{
+        NSLog(@"           Here1");
+        
+        NSString* callbackId = [command callbackId];
+        NSString* name = [[command arguments] objectAtIndex:0];
+        NSString* msg = [NSString stringWithFormat: @"Hello, %@", name];
+        
+        NSString* msgAndResponse = [self sendMessage: msg];
+        NSLog(@"           Here2");
+    }];
 }
 
 
