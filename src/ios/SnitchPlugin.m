@@ -59,7 +59,7 @@ static BOOL _hasCrashReportPending;
 }
 
 /* If a crash report exists, make it accessible via iTunes document sharing. This is a no-op on Mac OS X. */
-- (void) save_crash_report () {
+- (void) save_crash_report() {
     if (![[PLCrashReporter sharedReporter] hasPendingCrashReport])
         return;
     
