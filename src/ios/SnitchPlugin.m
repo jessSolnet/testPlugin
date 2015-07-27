@@ -26,7 +26,7 @@
     
     NSString * encodedMessage = (NSString *)  CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef) message, NULL, (CFStringRef) @"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8));
     
-    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://jess-laptop.local:8080/snitchspring/CrashListener?data=", encodedMessage];
+    NSString *urlString = [NSString stringWithFormat: @"%@%@", @"http://10.1.140.148:8080/snitchspring/CrashListener?data=", encodedMessage];
     
     NSURL *url = [NSURL URLWithString:urlString];
     
